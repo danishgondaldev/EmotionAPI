@@ -1,1 +1,1 @@
-web: gunicorn emotion_api:app
+web: gunicorn app:app
