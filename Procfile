@@ -1,1 +1,1 @@
-web: python emotion_api.py
+web: gunicorn wsgi:app
