@@ -9,7 +9,6 @@ pip-chill==1.0.3
 pygame==2.5.2
 pyqt5-tools==5.15.9.3.3
 retina-face==0.0.14
-scikit-learn==1.4.1.post1
 twilio==9.2.3
 typing==3.7.4
 ultralytics==8.2.75
