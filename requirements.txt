@@ -1,6 +1,5 @@
 Flask==2.3.3
 dlib==19.24.2
-matplotlib==3.8.3
 opencv-python==4.9.0.80
 pandas==2.2.2
 Pillow==10.3.0
