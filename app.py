@@ -7,19 +7,41 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 from approach.ResEmoteNet import ResEmoteNet
 import os
+import gdown
 
 app = Flask(__name__)
 
 # Emotions labels
 emotions = ['happy', 'surprise', 'sad', 'anger', 'disgust', 'fear', 'neutral']
 
+# Google Drive model link
+drive_url = "https://drive.google.com/uc?id=1_pEQqdUkwtCZN4DQwdtn14W7zfvgzO_X"
+model_path = './models/rafdb_model_revised.pth'  # Local path to save the model
+
+def download_model():
+    """Download the model from Google Drive if not present locally."""
+    os.makedirs('./models', exist_ok=True)
+    if not os.path.exists(model_path):
+        print("Downloading model...")
+        gdown.download(drive_url, model_path, quiet=False)
+        print("Model downloaded successfully.")
+    else:
+        print("Model already exists locally.")
+
 # Load the trained model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # Use CUDA if available
 model = ResEmoteNet().to(device)
-model_path = './models/rafdb_model_revised.pth'  # Path for deployed model
-checkpoint = torch.load(model_path, map_location=device)
-model.load_state_dict(checkpoint['model_state_dict'])
-model.eval()
+
+def initialize_model():
+    """Ensure the model is downloaded and loaded into memory."""
+    download_model()  # Ensure the model file is available
+    checkpoint = torch.load(model_path, map_location=device)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    model.eval()
+    print("Model loaded into memory.")
+
+# Initialize the model at server start
+initialize_model()
 
 # Image transformations
 transform = transforms.Compose([
